@@ -1,0 +1,409 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--ivory:#FAF7F2;--ivory2:#F2EDE4;--ivory3:#E8E0D4;
+--brown:#2C1A0E;--brown2:#4A2E18;--brown3:#7A5C3E;
+--brown-light:#B8957A;--brown-pale:#D4B89A;
+--cream:#FFFDF9;
+--accent:#8B4513;--accent2:#A0522D;
+--urgent:#C0392B;--followup:#1A5276;--work:#145A32;--personal:#6C3483;--remind:#7D6608;
+--demo:#784212;--install:#0E6655;
+--border:#DDD5C8;--border2:#C4B8A8;
+--text:#2C1A0E;--text2:#5C4033;--text3:#8C7060;
+--r:10px;--r-sm:7px;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--ivory);color:var(--text);min-height:100vh}
+.app{min-height:100vh;background:var(--ivory)}
+.topbar{background:var(--brown);padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:62px;position:sticky;top:0;z-index:100}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-mark{width:34px;height:34px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--ivory);font-size:16px;font-weight:600}
+.brand-name{font-family:'DM Serif Display',serif;font-size:20px;color:var(--ivory);letter-spacing:0.3px}
+.brand-sub{font-size:11px;color:var(--brown-light);letter-spacing:1.2px;text-transform:uppercase;margin-top:1px}
+.date-chip{font-size:12px;color:var(--brown-light);background:rgba(255,255,255,0.08);padding:6px 14px;border-radius:20px;border:1px solid rgba(255,255,255,0.12);letter-spacing:0.2px}
+.tabs{display:flex;gap:2px;background:rgba(0,0,0,0.25);padding:4px;border-radius:10px}
+.tab-btn{padding:7px 18px;border-radius:7px;border:none;background:transparent;color:var(--brown-light);font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:7px;transition:all 0.2s;font-family:'DM Sans',sans-serif;letter-spacing:0.2px}
+.tab-btn.active{background:var(--ivory2);color:var(--brown);border:1px solid var(--border)}
+.tab-btn i{font-size:15px}
+.main{padding:24px 28px}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.stat-card{background:var(--cream);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;border-top:3px solid var(--brown-pale)}
+.stat-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;font-weight:500}
+.stat-val{font-family:'DM Serif Display',serif;font-size:30px;color:var(--brown);margin-bottom:2px}
+.stat-sub{font-size:11px;color:var(--text3)}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.section-title{font-family:'DM Serif Display',serif;font-size:22px;color:var(--brown);display:flex;align-items:center;gap:10px}
+.section-title i{font-size:20px;color:var(--brown3)}
+.divider{height:1px;background:var(--border);margin-bottom:20px}
+.add-btn{display:flex;align-items:center;gap:7px;padding:9px 18px;background:var(--brown);color:var(--ivory);font-size:13px;font-weight:500;border:none;border-radius:var(--r-sm);cursor:pointer;font-family:'DM Sans',sans-serif;transition:background 0.18s}
+.add-btn:hover{background:var(--brown2)}
+.add-btn i{font-size:15px}
+.filter-row{display:flex;gap:7px;margin-bottom:18px;flex-wrap:wrap;align-items:center}
+.search-wrap{position:relative;flex:1;min-width:160px}
+.search-wrap i{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--text3);pointer-events:none}
+.search-inp{width:100%;background:var(--cream);border:1px solid var(--border);border-radius:20px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;padding:7px 14px 7px 34px;outline:none;transition:border-color 0.2s}
+.search-inp:focus{border-color:var(--brown3)}
+.filter-btn{padding:6px 14px;background:transparent;border:1px solid var(--border);border-radius:20px;color:var(--text3);font-family:'DM Sans',sans-serif;font-size:12px;cursor:pointer;transition:all 0.18s;white-space:nowrap;font-weight:500}
+.filter-btn.active{background:var(--brown);border-color:var(--brown);color:var(--ivory)}
+.filter-btn:hover:not(.active){border-color:var(--border2);color:var(--text2)}
+.date-section{margin-bottom:28px}
+.date-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.date-label{font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--brown2);padding:4px 12px;background:var(--ivory2);border-radius:20px;border:1px solid var(--border)}
+.date-line{flex:1;height:1px;background:var(--border)}
+.date-count{font-size:11px;color:var(--text3)}
+.calls-list,.todos-list{display:flex;flex-direction:column;gap:9px}
+.call-card{background:var(--cream);border:1px solid var(--border);border-radius:var(--r);padding:15px 18px;display:grid;grid-template-columns:56px 1fr auto auto;gap:14px;align-items:center;transition:border-color 0.18s,background 0.18s;position:relative;overflow:hidden}
+.call-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px 0 0 3px}
+.call-card.p-urgent::before{background:var(--urgent)}
+.call-card.p-followup::before{background:var(--followup)}
+.call-card.p-work::before{background:var(--work)}
+.call-card.p-personal::before{background:var(--personal)}
+.call-card.p-remind::before{background:var(--remind)}
+.call-card:hover{border-color:var(--border2);background:var(--ivory2)}
+.call-time{text-align:center}
+.call-time-main{font-family:'DM Serif Display',serif;font-size:16px;color:var(--brown);line-height:1.2}
+.call-time-ampm{font-size:10px;color:var(--text3);letter-spacing:0.5px;text-transform:uppercase}
+.call-name{font-size:14px;font-weight:500;color:var(--text);margin-bottom:5px}
+.call-meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.call-phone{font-size:12px;color:var(--text3);display:flex;align-items:center;gap:3px}
+.call-phone i{font-size:12px}
+.call-code{font-size:11px;background:var(--ivory2);color:var(--brown3);padding:2px 8px;border-radius:4px;font-weight:600;letter-spacing:0.5px;border:1px solid var(--border)}
+.call-reason{font-size:12px;color:var(--text3);max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pbadge{font-size:10px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;padding:4px 10px;border-radius:20px;white-space:nowrap}
+.b-urgent{background:#FDEDEC;color:#922B21;border:1px solid #F5B7B1}
+.b-followup{background:#EAF2FF;color:#1A5276;border:1px solid #AED6F1}
+.b-work{background:#E9F7EF;color:#145A32;border:1px solid #A9DFBF}
+.b-personal{background:#F5EEF8;color:#6C3483;border:1px solid #D7BDE2}
+.b-remind{background:#FEFDE7;color:#7D6608;border:1px solid #F7DC6F}
+.card-actions{display:flex;gap:5px}
+.icon-btn{width:30px;height:30px;border-radius:var(--r-sm);border:1px solid var(--border);background:transparent;color:var(--text3);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;transition:all 0.18s;font-family:'DM Sans',sans-serif}
+.icon-btn:hover{border-color:var(--brown3);color:var(--brown2);background:var(--ivory2)}
+.icon-btn.del:hover{border-color:#E74C3C;color:#C0392B;background:#FDEDEC}
+.todo-card{background:var(--cream);border:1px solid var(--border);border-radius:var(--r);padding:14px 18px;display:grid;grid-template-columns:22px 1fr auto auto;gap:12px;align-items:start;transition:all 0.18s;position:relative;overflow:hidden}
+.todo-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px 0 0 3px}
+.todo-card.tg-followup::before{background:var(--followup)}
+.todo-card.tg-demo::before{background:var(--demo)}
+.todo-card.tg-install::before{background:var(--install)}
+.todo-card.tg-work::before{background:var(--work)}
+.todo-card.tg-urgent::before{background:var(--urgent)}
+.todo-card.tg-personal::before{background:var(--personal)}
+.todo-card:hover{border-color:var(--border2);background:var(--ivory2)}
+.todo-card.done{opacity:0.5}
+.todo-card.done .todo-title{text-decoration:line-through;color:var(--text3)}
+.check-box{width:20px;height:20px;border-radius:5px;border:1.5px solid var(--border2);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;color:transparent;margin-top:2px;flex-shrink:0;transition:all 0.18s}
+.check-box.checked{background:var(--brown);border-color:var(--brown);color:var(--ivory)}
+.todo-title{font-size:14px;font-weight:500;color:var(--text);margin-bottom:6px;line-height:1.45}
+.todo-meta{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.tag-pill{font-size:10px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;padding:3px 9px;border-radius:20px}
+.tp-followup{background:#EAF2FF;color:#1A5276;border:1px solid #AED6F1}
+.tp-demo{background:#FDF2E9;color:#784212;border:1px solid #FAD7A0}
+.tp-install{background:#E8F8F5;color:#0E6655;border:1px solid #A2D9CE}
+.tp-work{background:#E9F7EF;color:#145A32;border:1px solid #A9DFBF}
+.tp-urgent{background:#FDEDEC;color:#922B21;border:1px solid #F5B7B1}
+.tp-personal{background:#F5EEF8;color:#6C3483;border:1px solid #D7BDE2}
+.todo-due{font-size:12px;color:var(--text3);display:flex;align-items:center;gap:3px}
+.todo-due.ov{color:#C0392B}
+.todo-priority-label{font-size:10px;font-weight:600;letter-spacing:0.6px;text-transform:uppercase}
+.pr-high{color:#C0392B}.pr-medium{color:#A04000}.pr-low{color:#145A32}
+.empty-state{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
+.empty-state i{font-size:38px;color:var(--border2);margin-bottom:12px;display:block}
+.tab-view{display:none}
+.tab-view.active{display:block}
+.view-split{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.panel{background:var(--cream);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.panel-head{padding:13px 16px;border-bottom:1px solid var(--border);background:var(--ivory2);font-family:'DM Serif Display',serif;font-size:16px;color:var(--brown);display:flex;align-items:center;gap:8px}
+.panel-head i{font-size:16px;color:var(--brown3)}
+.count-chip{margin-left:auto;background:var(--brown);color:var(--ivory);font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;font-family:'DM Sans',sans-serif}
+.panel-body{padding:12px 16px;max-height:300px;overflow-y:auto}
+.mini-row{display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid var(--border)}
+.mini-row:last-child{border-bottom:none}
+.mini-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.mini-name{flex:1;font-size:13px;color:var(--text);font-weight:500}
+.mini-sub{font-size:11px;color:var(--text3);white-space:nowrap}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(44,26,14,0.5);z-index:999;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:var(--cream);border:1px solid var(--border2);border-radius:14px;width:520px;max-width:calc(100vw - 32px);max-height:90vh;overflow-y:auto;padding:28px;position:relative;border-top:4px solid var(--brown)}
+.modal-title{font-family:'DM Serif Display',serif;font-size:22px;color:var(--brown);margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.modal-title i{font-size:20px;color:var(--brown3)}
+.modal-close{position:absolute;top:20px;right:20px;width:30px;height:30px;border-radius:var(--r-sm);border:1px solid var(--border);background:transparent;color:var(--text3);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'DM Sans',sans-serif;transition:all 0.18s}
+.modal-close:hover{border-color:#E74C3C;color:#C0392B}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.form-group{display:flex;flex-direction:column;gap:5px}
+.form-group.full{grid-column:1/-1}
+.form-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;font-weight:600}
+.form-input,.form-select,.form-textarea{background:var(--ivory2);border:1px solid var(--border);border-radius:var(--r-sm);color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;padding:9px 12px;outline:none;transition:border-color 0.2s;width:100%;-webkit-appearance:none;appearance:none}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--brown3)}
+.form-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238C7060' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-color:var(--ivory2);padding-right:32px}
+.form-textarea{min-height:70px;resize:vertical}
+.modal-footer{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
+.btn-cancel{padding:9px 18px;background:transparent;border:1px solid var(--border);border-radius:var(--r-sm);color:var(--text3);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all 0.18s}
+.btn-cancel:hover{border-color:var(--border2);color:var(--text)}
+.btn-save{padding:9px 22px;background:var(--brown);border:none;border-radius:var(--r-sm);color:var(--ivory);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:background 0.18s;display:flex;align-items:center;gap:7px}
+.btn-save:hover{background:var(--brown2)}
+</style>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
+
+<div class="app">
+<div class="topbar">
+  <div class="brand">
+    <div class="brand-mark">P</div>
+    <div>
+      <div class="brand-name">PartnerDesk</div>
+      <div class="brand-sub">Inside Partner Team</div>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('dashboard')" id="tab-dashboard"><i class="ti ti-layout-dashboard" aria-hidden="true"></i>Dashboard</button>
+    <button class="tab-btn" onclick="switchTab('calls')" id="tab-calls"><i class="ti ti-phone-call" aria-hidden="true"></i>Calls</button>
+    <button class="tab-btn" onclick="switchTab('todos')" id="tab-todos"><i class="ti ti-checkbox" aria-hidden="true"></i>To-Do</button>
+  </div>
+  <div class="date-chip" id="topbar-date"></div>
+</div>
+
+<div class="main">
+  <div class="tab-view active" id="view-dashboard">
+    <div class="stats-row" id="stats-row"></div>
+    <div class="view-split">
+      <div class="panel">
+        <div class="panel-head"><i class="ti ti-phone-call" aria-hidden="true"></i>Upcoming calls<span class="count-chip" id="dc-count">0</span></div>
+        <div class="panel-body" id="dc-list"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><i class="ti ti-checkbox" aria-hidden="true"></i>Pending tasks<span class="count-chip" id="dt-count">0</span></div>
+        <div class="panel-body" id="dt-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-view" id="view-calls">
+    <div class="section-header">
+      <div class="section-title"><i class="ti ti-phone-call" aria-hidden="true"></i>Scheduled calls</div>
+      <button class="add-btn" onclick="openCallModal()"><i class="ti ti-plus" aria-hidden="true"></i>Schedule call</button>
+    </div>
+    <div class="divider"></div>
+    <div class="filter-row">
+      <div class="search-wrap"><i class="ti ti-search" aria-hidden="true"></i><input class="search-inp" type="text" placeholder="Search calls…" oninput="renderCalls()" id="call-search"/></div>
+      <button class="filter-btn active" onclick="setCallFilter('all',this)">All</button>
+      <button class="filter-btn" onclick="setCallFilter('urgent',this)">Urgent</button>
+      <button class="filter-btn" onclick="setCallFilter('followup',this)">Follow-up</button>
+      <button class="filter-btn" onclick="setCallFilter('work',this)">Work</button>
+      <button class="filter-btn" onclick="setCallFilter('personal',this)">Personal</button>
+      <button class="filter-btn" onclick="setCallFilter('remind',this)">Remind</button>
+    </div>
+    <div id="calls-container"></div>
+  </div>
+
+  <div class="tab-view" id="view-todos">
+    <div class="section-header">
+      <div class="section-title"><i class="ti ti-checkbox" aria-hidden="true"></i>To-do list</div>
+      <button class="add-btn" onclick="openTodoModal()"><i class="ti ti-plus" aria-hidden="true"></i>Add task</button>
+    </div>
+    <div class="divider"></div>
+    <div class="filter-row">
+      <div class="search-wrap"><i class="ti ti-search" aria-hidden="true"></i><input class="search-inp" type="text" placeholder="Search tasks…" oninput="renderTodos()" id="todo-search"/></div>
+      <button class="filter-btn active" onclick="setTodoFilter('all',this)">All</button>
+      <button class="filter-btn" onclick="setTodoFilter('pending',this)">Pending</button>
+      <button class="filter-btn" onclick="setTodoFilter('done',this)">Done</button>
+      <button class="filter-btn" onclick="setTodoFilter('followup',this)">Follow-up</button>
+      <button class="filter-btn" onclick="setTodoFilter('demo',this)">Demo</button>
+      <button class="filter-btn" onclick="setTodoFilter('install',this)">Install</button>
+      <button class="filter-btn" onclick="setTodoFilter('overdue',this)">Overdue</button>
+    </div>
+    <div id="todos-container"></div>
+  </div>
+</div>
+</div>
+
+<!-- CALL MODAL -->
+<div class="modal-overlay" id="call-modal">
+  <div class="modal">
+    <div class="modal-title"><i class="ti ti-phone-plus" aria-hidden="true"></i><span id="call-modal-title">Schedule a call</span></div>
+    <button class="modal-close" onclick="closeCallModal()"><i class="ti ti-x" aria-hidden="true"></i></button>
+    <div class="form-grid">
+      <div class="form-group"><label class="form-label">Full name *</label><input class="form-input" type="text" id="c-name" placeholder="Partner name"/></div>
+      <div class="form-group"><label class="form-label">Phone number *</label><input class="form-input" type="tel" id="c-phone" placeholder="+91 98765 43210"/></div>
+      <div class="form-group"><label class="form-label">Partner code</label><input class="form-input" type="text" id="c-code" placeholder="e.g. PT-2041"/></div>
+      <div class="form-group"><label class="form-label">Date *</label><input class="form-input" type="date" id="c-date"/></div>
+      <div class="form-group"><label class="form-label">Time *</label><input class="form-input" type="time" id="c-time"/></div>
+      <div class="form-group"><label class="form-label">Priority</label>
+        <select class="form-select" id="c-priority">
+          <option value="followup">Follow-up</option>
+          <option value="work">Work</option>
+          <option value="urgent">Urgent</option>
+          <option value="personal">Personal remind</option>
+          <option value="remind">Remind</option>
+        </select>
+      </div>
+      <div class="form-group full"><label class="form-label">Reason / notes</label><textarea class="form-textarea" id="c-reason" placeholder="What is this call about?"></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeCallModal()">Cancel</button>
+      <button class="btn-save" onclick="saveCall()"><i class="ti ti-device-floppy" aria-hidden="true"></i>Save call</button>
+    </div>
+  </div>
+</div>
+
+<!-- TODO MODAL -->
+<div class="modal-overlay" id="todo-modal">
+  <div class="modal">
+    <div class="modal-title"><i class="ti ti-clipboard-plus" aria-hidden="true"></i><span id="todo-modal-title">Add task</span></div>
+    <button class="modal-close" onclick="closeTodoModal()"><i class="ti ti-x" aria-hidden="true"></i></button>
+    <div class="form-grid">
+      <div class="form-group full"><label class="form-label">Task description *</label><textarea class="form-textarea" id="t-desc" placeholder="What needs to be done?"></textarea></div>
+      <div class="form-group"><label class="form-label">Due date *</label><input class="form-input" type="date" id="t-date"/></div>
+      <div class="form-group"><label class="form-label">Due time</label><input class="form-input" type="time" id="t-time"/></div>
+      <div class="form-group"><label class="form-label">Priority</label>
+        <select class="form-select" id="t-priority">
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Tag</label>
+        <select class="form-select" id="t-tag">
+          <option value="followup">Follow-up</option>
+          <option value="demo">Demo</option>
+          <option value="install">Install</option>
+          <option value="work">Work</option>
+          <option value="urgent">Urgent</option>
+          <option value="personal">Personal</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeTodoModal()">Cancel</button>
+      <button class="btn-save" onclick="saveTodo()"><i class="ti ti-device-floppy" aria-hidden="true"></i>Save task</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let calls=JSON.parse(localStorage.getItem('pd2_calls')||'[]');
+let todos=JSON.parse(localStorage.getItem('pd2_todos')||'[]');
+let editingCallId=null,editingTodoId=null,callFilter='all',todoFilter='all';
+function save(){localStorage.setItem('pd2_calls',JSON.stringify(calls));localStorage.setItem('pd2_todos',JSON.stringify(todos));}
+function uid(){return Math.random().toString(36).slice(2)+Date.now().toString(36);}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function formatDate(d){
+  if(!d)return'';
+  const dt=new Date(d+'T00:00:00'),today=new Date();today.setHours(0,0,0,0);
+  const tom=new Date(today);tom.setDate(tom.getDate()+1);
+  if(dt.getTime()===today.getTime())return'Today';
+  if(dt.getTime()===tom.getTime())return'Tomorrow';
+  return dt.toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+}
+function fmtTime(t){if(!t)return{time:'',ampm:''};const[h,m]=t.split(':').map(Number);return{time:`${h%12||12}:${String(m).padStart(2,'0')}`,ampm:h>=12?'PM':'AM'};}
+function isOverdue(date,time){return new Date(`${date}T${time||'23:59'}:00`)<new Date();}
+function groupByDate(items,f){const g={};items.forEach(i=>{const d=i[f]||'';if(!g[d])g[d]=[];g[d].push(i);});return g;}
+function pColor(p){return{urgent:'#C0392B',followup:'#1A5276',work:'#145A32',personal:'#6C3483',remind:'#7D6608'}[p]||'#8C7060';}
+function tColor(t){return{followup:'#1A5276',demo:'#784212',install:'#0E6655',work:'#145A32',urgent:'#C0392B',personal:'#6C3483'}[t]||'#8C7060';}
+function pBadge(p){const m={urgent:'b-urgent',followup:'b-followup',work:'b-work',personal:'b-personal',remind:'b-remind'};const l={urgent:'Urgent',followup:'Follow-up',work:'Work',personal:'Personal',remind:'Remind'};return`<span class="pbadge ${m[p]||'b-followup'}">${l[p]||p}</span>`;}
+function tagPill(t){const m={followup:'tp-followup',demo:'tp-demo',install:'tp-install',work:'tp-work',urgent:'tp-urgent',personal:'tp-personal'};const l={followup:'Follow-up',demo:'Demo',install:'Install',work:'Work',urgent:'Urgent',personal:'Personal'};return`<span class="tag-pill ${m[t]||'tp-work'}">${l[t]||t}</span>`;}
+function prLabel(p){const c={high:'pr-high',medium:'pr-medium',low:'pr-low'};return`<span class="todo-priority-label ${c[p]||''}">${p}</span>`;}
+
+function switchTab(n){
+  document.querySelectorAll('.tab-view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('view-'+n).classList.add('active');
+  document.getElementById('tab-'+n).classList.add('active');
+  if(n==='dashboard')renderDashboard();
+  if(n==='calls')renderCalls();
+  if(n==='todos')renderTodos();
+}
+function setCallFilter(f,el){callFilter=f;document.querySelectorAll('#view-calls .filter-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');renderCalls();}
+function setTodoFilter(f,el){todoFilter=f;document.querySelectorAll('#view-todos .filter-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');renderTodos();}
+
+function renderCalls(){
+  const q=(document.getElementById('call-search')?.value||'').toLowerCase();
+  let f=calls.filter(c=>(callFilter==='all'||c.priority===callFilter)&&(!q||c.name.toLowerCase().includes(q)||c.phone.includes(q)||(c.code||'').toLowerCase().includes(q)||(c.reason||'').toLowerCase().includes(q)));
+  f.sort((a,b)=>(a.date+a.time)<(b.date+b.time)?-1:1);
+  const g=groupByDate(f,'date');
+  const cont=document.getElementById('calls-container');
+  if(!f.length){cont.innerHTML=`<div class="empty-state"><i class="ti ti-phone-off" aria-hidden="true"></i>No calls found. Schedule one!</div>`;return;}
+  cont.innerHTML=Object.keys(g).sort().map(date=>{
+    const items=g[date];
+    return`<div class="date-section"><div class="date-header"><span class="date-label">${formatDate(date)}</span><div class="date-line"></div><span class="date-count">${items.length} call${items.length>1?'s':''}</span></div><div class="calls-list">${items.map(c=>{const t=fmtTime(c.time);return`<div class="call-card p-${c.priority}"><div class="call-time"><div class="call-time-main">${t.time||'--'}</div><div class="call-time-ampm">${t.ampm}</div></div><div><div class="call-name">${esc(c.name)}</div><div class="call-meta"><span class="call-phone"><i class="ti ti-phone" aria-hidden="true"></i>${esc(c.phone)}</span>${c.code?`<span class="call-code">${esc(c.code)}</span>`:''} ${c.reason?`<span class="call-reason">${esc(c.reason)}</span>`:''}</div></div><div>${pBadge(c.priority)}</div><div class="card-actions"><button class="icon-btn" onclick="editCall('${c.id}')" aria-label="Edit"><i class="ti ti-edit" aria-hidden="true"></i></button><button class="icon-btn del" onclick="deleteCall('${c.id}')" aria-label="Delete"><i class="ti ti-trash" aria-hidden="true"></i></button></div></div>`;}).join('')}</div></div>`;
+  }).join('');
+}
+
+function renderTodos(){
+  const q=(document.getElementById('todo-search')?.value||'').toLowerCase();
+  let f=todos.filter(t=>{
+    if(todoFilter==='pending')return!t.done;
+    if(todoFilter==='done')return t.done;
+    if(todoFilter==='overdue')return!t.done&&isOverdue(t.date,t.time);
+    if(['followup','demo','install','work','urgent','personal'].includes(todoFilter))return t.tag===todoFilter;
+    return true;
+  }).filter(t=>!q||t.desc.toLowerCase().includes(q));
+  f.sort((a,b)=>{if(a.done!==b.done)return a.done?1:-1;return(a.date+a.time)<(b.date+b.time)?-1:1;});
+  const g=groupByDate(f,'date');
+  const cont=document.getElementById('todos-container');
+  if(!f.length){cont.innerHTML=`<div class="empty-state"><i class="ti ti-clipboard-off" aria-hidden="true"></i>No tasks found. Add one!</div>`;return;}
+  cont.innerHTML=Object.keys(g).sort().map(date=>{
+    const items=g[date];
+    return`<div class="date-section"><div class="date-header"><span class="date-label">${formatDate(date)}</span><div class="date-line"></div><span class="date-count">${items.filter(x=>!x.done).length} pending</span></div><div class="todos-list">${items.map(t=>{const ov=!t.done&&t.date&&isOverdue(t.date,t.time);return`<div class="todo-card ${t.done?'done':''} tg-${t.tag}"><div class="check-box ${t.done?'checked':''}" onclick="toggleTodo('${t.id}')" role="checkbox" aria-checked="${t.done}">${t.done?'<i class="ti ti-check" aria-hidden="true" style="font-size:11px"></i>':''}</div><div><div class="todo-title">${esc(t.desc)}</div><div class="todo-meta">${tagPill(t.tag)}${t.time?`<span class="todo-due ${ov?'ov':''}"><i class="ti ti-clock" aria-hidden="true"></i>${t.time}</span>`:''} ${ov?'<span style="font-size:10px;color:#C0392B;font-weight:700;letter-spacing:0.5px">OVERDUE</span>':''}</div></div><div>${prLabel(t.priority)}</div><div class="card-actions" style="flex-direction:column;gap:4px"><button class="icon-btn" onclick="editTodo('${t.id}')" aria-label="Edit"><i class="ti ti-edit" aria-hidden="true"></i></button><button class="icon-btn del" onclick="deleteTodo('${t.id}')" aria-label="Delete"><i class="ti ti-trash" aria-hidden="true"></i></button></div></div>`;}).join('')}</div></div>`;
+  }).join('');
+}
+
+function renderDashboard(){
+  const todayStr=new Date().toISOString().split('T')[0];
+  const todayCalls=calls.filter(c=>c.date===todayStr);
+  const pending=todos.filter(t=>!t.done);
+  const overdue=todos.filter(t=>!t.done&&t.date&&isOverdue(t.date,t.time));
+  const urgent=calls.filter(c=>c.priority==='urgent');
+  document.getElementById('stats-row').innerHTML=`
+    <div class="stat-card"><div class="stat-label">Total calls</div><div class="stat-val">${calls.length}</div><div class="stat-sub">${todayCalls.length} scheduled today</div></div>
+    <div class="stat-card"><div class="stat-label">Pending tasks</div><div class="stat-val">${pending.length}</div><div class="stat-sub">${todos.length} total tasks</div></div>
+    <div class="stat-card"><div class="stat-label">Overdue</div><div class="stat-val" style="color:#C0392B">${overdue.length}</div><div class="stat-sub">Tasks past due date</div></div>
+    <div class="stat-card"><div class="stat-label">Urgent calls</div><div class="stat-val" style="color:#C0392B">${urgent.length}</div><div class="stat-sub">Needs attention</div></div>
+  `;
+  const upCalls=calls.filter(c=>new Date(`${c.date}T${c.time||'00:00'}:00`)>=new Date()).sort((a,b)=>(a.date+a.time)<(b.date+b.time)?-1:1).slice(0,6);
+  document.getElementById('dc-count').textContent=upCalls.length;
+  document.getElementById('dc-list').innerHTML=upCalls.length?upCalls.map(c=>{const t=fmtTime(c.time);return`<div class="mini-row"><div class="mini-dot" style="background:${pColor(c.priority)}"></div><div class="mini-name">${esc(c.name)}</div><div class="mini-sub">${formatDate(c.date)} ${t.time} ${t.ampm}</div></div>`;}).join(''):`<div class="empty-state" style="padding:20px"><i class="ti ti-phone-off" aria-hidden="true"></i>No upcoming calls</div>`;
+  const upTodos=todos.filter(t=>!t.done).sort((a,b)=>(a.date+a.time)<(b.date+b.time)?-1:1).slice(0,6);
+  document.getElementById('dt-count').textContent=upTodos.length;
+  document.getElementById('dt-list').innerHTML=upTodos.length?upTodos.map(t=>`<div class="mini-row"><div class="mini-dot" style="background:${tColor(t.tag)}"></div><div class="mini-name">${esc(t.desc.length>36?t.desc.slice(0,36)+'…':t.desc)}</div><div class="mini-sub">${formatDate(t.date)}</div></div>`).join(''):`<div class="empty-state" style="padding:20px"><i class="ti ti-clipboard-off" aria-hidden="true"></i>No pending tasks</div>`;
+}
+
+function openCallModal(id){
+  editingCallId=id||null;
+  document.getElementById('call-modal-title').textContent=id?'Edit call':'Schedule a call';
+  if(id){const c=calls.find(x=>x.id===id);if(!c)return;document.getElementById('c-name').value=c.name;document.getElementById('c-phone').value=c.phone;document.getElementById('c-code').value=c.code||'';document.getElementById('c-date').value=c.date;document.getElementById('c-time').value=c.time;document.getElementById('c-priority').value=c.priority;document.getElementById('c-reason').value=c.reason||'';}
+  else{['c-name','c-phone','c-code','c-reason'].forEach(i=>document.getElementById(i).value='');document.getElementById('c-date').value=new Date().toISOString().split('T')[0];document.getElementById('c-time').value='';document.getElementById('c-priority').value='followup';}
+  document.getElementById('call-modal').classList.add('open');
+}
+function closeCallModal(){document.getElementById('call-modal').classList.remove('open');}
+function saveCall(){
+  const name=document.getElementById('c-name').value.trim(),phone=document.getElementById('c-phone').value.trim(),date=document.getElementById('c-date').value;
+  if(!name||!phone||!date){alert('Please fill in name, phone and date.');return;}
+  const obj={id:editingCallId||uid(),name,phone,code:document.getElementById('c-code').value.trim(),date,time:document.getElementById('c-time').value,priority:document.getElementById('c-priority').value,reason:document.getElementById('c-reason').value.trim()};
+  if(editingCallId){const i=calls.findIndex(x=>x.id===editingCallId);calls[i]=obj;}else calls.push(obj);
+  save();closeCallModal();renderCalls();renderDashboard();
+}
+function editCall(id){openCallModal(id);}
+function deleteCall(id){if(!confirm('Delete this call?'))return;calls=calls.filter(x=>x.id!==id);save();renderCalls();renderDashboard();}
+
+function openTodoModal(id){
+  editingTodoId=id||null;
+  document.getElementById('todo-modal-title').textContent=id?'Edit task':'Add task';
+  if(id){const t=todos.find(x=>x.id===id);if(!t)return;document.getElementById('t-desc').value=t.desc;document.getElementById('t-date').value=t.date;document.getElementById('t-time').value=t.time||'';document.getElementById('t-priority').value=t.priority;document.getElementById('t-tag').value=t.tag;}
+  else{document.getElementById('t-desc').value='';document.getElementById('t-date').value=new Date().toISOString().split('T')[0];document.getElementById('t-time').value='';document.getElementById('t-priority').value='medium';document.getElementById('t-tag').value='followup';}
+  document.getElementById('todo-modal').classList.add('open');
+}
+function closeTodoModal(){document.getElementById('todo-modal').classList.remove('open');}
+function saveTodo(){
+  const desc=document.getElementById('t-desc').value.trim(),date=document.getElementById('t-date').value;
+  if(!desc||!date){alert('Please fill in description and due date.');return;}
+  const obj={id:editingTodoId||uid(),desc,date,time:document.getElementById('t-time').value,priority:document.getElementById('t-priority').value,tag:document.getElementById('t-tag').value,done:editingTodoId?(todos.find(x=>x.id===editingTodoId)||{}).done||false:false};
+  if(editingTodoId){const i=todos.findIndex(x=>x.id===editingTodoId);todos[i]=obj;}else todos.push(obj);
+  save();closeTodoModal();renderTodos();renderDashboard();
+}
+function editTodo(id){openTodoModal(id);}
+function deleteTodo(id){if(!confirm('Delete this task?'))return;todos=todos.filter(x=>x.id!==id);save();renderTodos();renderDashboard();}
+function toggleTodo(id){const t=todos.find(x=>x.id===id);if(t){t.done=!t.done;save();renderTodos();renderDashboard();}}
+
+document.getElementById('topbar-date').textContent=new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+renderDashboard();
+</script>
